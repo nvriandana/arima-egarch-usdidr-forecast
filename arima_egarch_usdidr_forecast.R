@@ -3,7 +3,7 @@
 #           Using an ARIMA-GARCH Approach
 # AUTHOR  : NOVIAN RIANDANA
 # COURSE  : Time Series Analysis
-# VERSION : 5.2
+# VERSION : 2.5
 # DATE    : 24 July 2026
 # TARGET  : Scientific Journal (Sinta 4 indexed) in the field of 
 #           Actuarial Science/Applied Mathematics. 
