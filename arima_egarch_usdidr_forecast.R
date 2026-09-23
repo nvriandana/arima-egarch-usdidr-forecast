@@ -3,8 +3,8 @@
 #           Using an ARIMA-GARCH Approach
 # AUTHOR  : NOVIAN RIANDANA
 # COURSE  : Time Series Analysis
-# VERSION : 3.0
-# DATE    : 24 April 2026
+# VERSION : 5.2
+# DATE    : 24 July 2026
 # TARGET  : Scientific Journal (Sinta 4 indexed) in the field of 
 #           Actuarial Science/Applied Mathematics. 
 # ==============================================================================
@@ -56,16 +56,21 @@ cat("================================================================\n\n")
 # ------------------------------------------------------------------------------
 # 1.1  Import Data
 # ------------------------------------------------------------------------------
-FILE_PATH <- "C:/Users/novia/Downloads/President University/20252/Linear Regression and Time Series/ARIMA-EGARCH/Novian-dataset-W15.xlsx"
-SHEET_NAME <- "Data_Harian"
-
-raw_data <- read_excel(FILE_PATH, sheet = SHEET_NAME)
+raw_data <- read.csv2("usdidr_daily_prices.csv", fileEncoding = "UTF-8-BOM")
 colnames(raw_data) <- c("Tanggal", "Kurs_Penutupan_USD_IDR", "Log_Return")
 
-raw_data$Tanggal                <- as.Date(raw_data$Tanggal)
+# Drop fully blank trailing rows carried over from the Excel export range
+raw_data <- raw_data[!(raw_data$Tanggal == "" | is.na(raw_data$Tanggal)), ]
+
+raw_data$Tanggal                <- as.Date(raw_data$Tanggal, format = "%m/%d/%Y")
+if (any(is.na(raw_data$Tanggal))) {
+  stop("Date parsing failed for one or more rows in 'Tanggal' - check the source date format.")
+}
 raw_data$Kurs_Penutupan_USD_IDR <- as.numeric(raw_data$Kurs_Penutupan_USD_IDR)
 raw_data$Log_Return             <- as.numeric(raw_data$Log_Return)
 raw_data                        <- na.omit(raw_data)
+
+cat(sprintf("  Rows after dropping blank trailing rows: %d\n", nrow(raw_data)))
 
 cat("--- Full Dataset Summary ---\n")
 cat(sprintf("  Total observations : %d rows\n", nrow(raw_data)))
